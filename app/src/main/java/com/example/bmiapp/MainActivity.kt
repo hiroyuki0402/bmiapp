@@ -3,10 +3,10 @@ package com.example.bmiapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,9 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bmiapp.ui.theme.BMIAppTheme
 import androidx.compose.ui.graphics.Color
-import androidx.compose.material.Text
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -45,10 +50,53 @@ class MainActivity : ComponentActivity() {
                         )
 
                         /// 身長タイトル
+
+
+                        /// TextField
+                        TextField(
+                            value = "",
+                            callBack = {},
+                            labelText = "身長(cm)",
+                            placeholder = "170"
+                        )
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+
+                        /// TextField
+                        TextField(
+                            value = "",
+                            callBack = {},
+                            labelText = "体重(kg)",
+                            placeholder = "60"
+                        )
+
+                        Spacer(modifier = Modifier.height(30.dp))
+
+                        /// 計算する
+                        Button(
+                            colors = ButtonDefaults.buttonColors(Color.Red),
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = { }) {
+                            Text(
+                                text = "計算する",
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(40.dp))
+                        /// 結果
+
                         Text(
-                            text = "身長",
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Blue
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "あなたのBMIは00",
+                            textAlign = TextAlign.Center,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.ExtraBold
+
                         )
 
 
@@ -58,4 +106,34 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+}
+
+@Composable
+
+fun TextField(
+    value: String,
+    callBack: (String) -> Unit,
+    labelText: String,
+    placeholder: String
+) {
+    Column() {
+        Text(
+            text = labelText,
+            fontWeight = FontWeight.Bold,
+            color = Color.Blue
+        )
+
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = value,
+            onValueChange = callBack,
+            colors = TextFieldDefaults
+                .textFieldColors(backgroundColor = Color.Transparent),
+            placeholder = { Text(text = placeholder) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true
+
+
+        )
+    }
 }
